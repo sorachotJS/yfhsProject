@@ -1,6 +1,7 @@
 //importing modules
 const createError = require("http-errors");
-const { login } = require("../Models/auth.Model");
+const { login,updateLogoutStatus } = require("../Models/auth.Model");
+const {signAccessToken} = require("../services/jwt_helper")
 
 module.exports = {
     login: async (req, res, next) => {
@@ -12,32 +13,47 @@ module.exports = {
     
           if (result.length === 0) throw createError.NotFound("DATA NOT FOUND!");
     
-        //   const data = ({
-        //     id, hospital_code, role_code, zone_code, province_code, login_code, contact_id, status
-        //   } = result[0]);
+          const data = ({
+            id, zone_name, province_name, agency_name, hospital_code, hospital_level, position_name, full_name, department, office_phone, phone, email, line_id, status
+          } = result["rows"]);
 
-          const {
-            id, hospital_code, role_code, zone_code, province_code, login_code, contact_id, status
-          } = result[0];
+          const idToken = ({
+            id
+          } = result["rows"]);
+
+          // const {
+          //   id, zone_name, province_name, agency_name, hospital_code, hospital_level, login_code, position_name, full_name, department, office_phone, phone, email, line_id, status
+          // } = result;
     
-        //   const token = await signAccessToken({
-        //     id
-        //   });
+          const token = await signAccessToken({
+            idToken
+          });
     
-          const data = {
-            id,
-            code: login_code,
-            hospital_code, role_code, zone_code, province_code, login_code, contact_id, status,
-          };
+          const dataToken = ({
+            token,
+            Data:data
+          });
     
           res.send({
             status: 200,
             message: "login success",
-            user: data,
+            user: dataToken,
             // token: req.token,
           });
         } catch (error) {
           next(error);
         }
-      }
+      },
+      logout: async (req, res, next) => {
+        try {
+          const id = parseInt(req.params.id);
+          if (!id) throw createError.BadRequest();
+    
+          await updateLogoutStatus(id);
+    
+          res.send({ status: 204, message: "logout success" });
+        } catch (error) {
+          next(error);
+        }
+      },
 }
