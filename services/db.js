@@ -1,11 +1,11 @@
 const { Client } = require('pg')
 
 const db = new Client({
-    user: 'admin',
-    host: 'localhost',
-    database: 'myFirstDb',
-    password: 'admin',
-    port: 5432,
+  user: 'postgres',
+  host: 'localhost',
+  database: 'yfhsdb',
+  password: '123456',
+  port: 5432,
   });
 
   

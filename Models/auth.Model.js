@@ -6,7 +6,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
           db.query(
             `
-            SELECT id, zone_name, province_name, agency_name, hospital_code, hospital_level, position_name, full_name, department, office_phone, phone, email, line_id, status 
+            SELECT id, zone_name, province_name, agency_name, hospital_code, hospital_level,role, position_name, full_name, department, office_phone, phone, email, line_id, status 
             FROM tbl_account 
             WHERE login_code = $1 and status ISNULL
                     `,

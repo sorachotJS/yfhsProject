@@ -14,7 +14,7 @@ module.exports = {
           if (result.length === 0) throw createError.NotFound("DATA NOT FOUND!");
     
           const data = ({
-            id, zone_name, province_name, agency_name, hospital_code, hospital_level, position_name, full_name, department, office_phone, phone, email, line_id, status
+            id, zone_name, province_name, agency_name, hospital_code, hospital_level,role, position_name, full_name, department, office_phone, phone, email, line_id, status
           } = result["rows"]);
 
           const idToken = ({
